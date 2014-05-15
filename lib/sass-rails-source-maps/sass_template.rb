@@ -8,7 +8,11 @@ module SassRailsSourceMaps
 
     def copy_dependencies(files)
       files.each do |file|
-        FileUtils.cp(file, Rails.root.join("public", SassRailsSourceMaps::SOURCE_MAPS_DIRECTORY, File.basename(file)))
+        if File.file?(file)
+          FileUtils.cp(file, Rails.root.join("public", SassRailsSourceMaps::SOURCE_MAPS_DIRECTORY, File.basename(file)))
+        else
+          FileUtils.cp_r(file, Rails.root.join("public", SassRailsSourceMaps::SOURCE_MAPS_DIRECTORY), remove_destination: true)
+        end
       end
     end
 
